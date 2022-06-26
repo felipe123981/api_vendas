@@ -9,7 +9,7 @@ interface IRequest {
   email: string;
 }
 
-class UpdateProfileService {
+class UpdateCustomerService {
   public async execute({
     id,
     name,
@@ -39,4 +39,4 @@ class UpdateProfileService {
   }
 }
 
-export default UpdateProfileService;
+export default UpdateCustomerService;
