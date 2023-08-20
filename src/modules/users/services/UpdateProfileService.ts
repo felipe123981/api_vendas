@@ -1,6 +1,6 @@
-import User from '../typeorm/entities/User';
 import { getCustomRepository } from 'typeorm';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
+import User from '../typeorm/entities/User';
+import { UsersRepository } from '../typeorm/repositories/UsersRepository';
 import AppError from '@shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
 
@@ -20,37 +20,38 @@ class UpdateProfileService {
     password,
     old_password,
   }: IRequest): Promise<User> {
-    const usersRepository = getCustomRepository(UsersRepository);
+    const userRepository = getCustomRepository(UsersRepository);
 
-    const user = await usersRepository.findById(user_id);
+    const user = await userRepository.findById(user_id);
 
     if (!user) {
       throw new AppError('User not found.');
     }
 
-    const userUpdateEmail = await usersRepository.findByEmail(email);
+    const userUpdateEmail = await userRepository.findByEmail(email);
 
-    if (userUpdateEmail && userUpdateEmail.id != user_id) {
-      throw new AppError('There is already one user with this email.');
-    }
-    if (password && !old_password) {
-      throw new AppError('Old password is required.');
+    if(userUpdateEmail && userUpdateEmail.id != user.id) {
+      throw new AppError('There is already one user with this email.')
     }
 
-    if (password && old_password) {
-      const checkOldPassword = await compare(old_password, user.password);
+    if(password && !old_password) {
+      throw new AppError('Old password id required.')
+    }
 
-      if (!checkOldPassword) {
+    if(password && old_password) {
+      const checkPassword = await compare(old_password, user.password);
+
+      if(!checkPassword) {
         throw new AppError('Old password does not match.');
       }
 
-      user.password = await hash(password, 8);
+      user.password = await hash(password, 8)
     }
 
     user.name = name;
     user.email = email;
 
-      await usersRepository.save(user);
+    await userRepository.save(user);
 
     return user;
   }

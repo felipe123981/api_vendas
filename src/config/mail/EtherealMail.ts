@@ -1,29 +1,29 @@
 import nodemailer from 'nodemailer';
 import HandlebarsMailTemplate from './HandlebarsMailTemplate';
+import {
+  IParseMailTemplate,
+  ITemplateVariable,
+} from '@config/mail/@types/MailTemplates';
 
 interface IMailContact {
   name: string;
   email: string;
 }
 
-interface ITemplateVariable {
-  [key: string]: string | number;
-}
-
-interface IParseEmailTemplate {
-  file: string;
-  variables: ITemplateVariable;
-}
-
 interface ISendMail {
   to: IMailContact;
-  from?: IMailContact,
+  from?: IMailContact;
   subject: string;
-  templateData: IParseEmailTemplate;
+  templateData: IParseMailTemplate;
 }
 
 export default class EtherealMail {
-  static async sendMail({ to, from, subject, templateData }: ISendMail): Promise<void> {
+  static async sendMail({
+    to,
+    from,
+    subject,
+    templateData,
+  }: ISendMail): Promise<void> {
     const account = await nodemailer.createTestAccount();
 
     const mailTemplate = new HandlebarsMailTemplate();
@@ -40,8 +40,8 @@ export default class EtherealMail {
 
     const message = await transporter.sendMail({
       from: {
-        name: from?.name || 'Equipe API Vendas',
-        address: from?.email || 'equipe@apivendas.com.br'
+        name: from?.name || 'Sugarbay Team',
+        address: from?.email || 'support@sugarbay.com',
       },
       to: {
         name: to.name,
@@ -51,8 +51,7 @@ export default class EtherealMail {
       html: await mailTemplate.parse(templateData),
     });
 
-    console.log('Message send %s', message.messageId);
+    console.log('Message sent: %s', message.messageId);
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
   }
 }
-

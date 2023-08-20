@@ -1,18 +1,14 @@
-import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
+import { Router } from 'express';
 import isAuthenticated from '@shared/http/middlewares/isAuthenticated';
 import CustomersController from '../controllers/CustomersController';
 
 const customersRouter = Router();
-const customersController = new CustomersController();
 
 customersRouter.use(isAuthenticated);
+const customersController = new CustomersController();
 
-customersRouter.get(
-  '/',
-  customersController.index,
-);
-
+customersRouter.get('/', customersController.index);
 customersRouter.get(
   '/:id',
   celebrate({
@@ -22,7 +18,6 @@ customersRouter.get(
   }),
   customersController.show,
 );
-
 customersRouter.post(
   '/',
   celebrate({
@@ -33,21 +28,19 @@ customersRouter.post(
   }),
   customersController.create,
 );
-
 customersRouter.put(
   '/:id',
   celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
     },
-    [Segments.PARAMS]: {
-      id: Joi.string().uuid().required(),
-    },
   }),
   customersController.update,
 );
-
 customersRouter.delete(
   '/:id',
   celebrate({

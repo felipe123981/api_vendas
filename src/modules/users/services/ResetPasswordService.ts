@@ -1,13 +1,13 @@
-import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import { hash } from 'bcryptjs';
+import { UserTokensRepository } from '../typeorm/repositories/UserTokensRepository';
+import { UsersRepository } from '../typeorm/repositories/UsersRepository';
+import AppError from '@shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
-import UsersRepository from '../typeorm/repositories/UsersRepository';
-import UserTokensRepository from '../typeorm/repositories/UserTokensRepository';
+import { hash } from 'bcryptjs';
 
 interface IRequest {
-  token: string;
   password: string;
+  token: string;
 }
 
 class ResetPasswordService {

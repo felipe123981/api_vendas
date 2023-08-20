@@ -54,5 +54,4 @@ productsRouter.delete(
   productsController.delete,
 );
 
-
 export default productsRouter;

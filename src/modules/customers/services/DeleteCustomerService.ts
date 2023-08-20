@@ -1,6 +1,6 @@
-import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import CustomersRepository from "../typeorm/repositories/CustomersRepository";
+import { getCustomRepository } from 'typeorm';
+import AppError from '@shared/errors/AppError';
+import { CustomersRepository } from '../typeorm/repositories/CustomersRepository';
 
 interface IRequest {
   id: string;
@@ -8,15 +8,15 @@ interface IRequest {
 
 class DeleteCustomerService {
   public async execute({ id }: IRequest): Promise<void> {
-    const customersRepository = getCustomRepository(CustomersRepository);
+    const customerRepository = getCustomRepository(CustomersRepository);
 
-    const customer =  await customersRepository.findById(id);
+    const customer = await customerRepository.findById(id);
 
-    if(!customer) {
-      throw new AppError('Customer not found');
+    if (!customer) {
+      throw new AppError('Customer not found.');
     }
 
-    await customersRepository.remove(customer);
+    await customerRepository.remove(customer);
   }
 }
 

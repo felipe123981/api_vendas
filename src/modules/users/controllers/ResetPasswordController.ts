@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import ResetPasswordService from '../services/ResetPasswordService';
-import SendForgotPasswordEmailService from '../services/SendForgotPasswordEmailService';
 
 export default class ResetPasswordController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -10,7 +9,7 @@ export default class ResetPasswordController {
 
     await resetPassword.execute({
       password,
-      token
+      token,
     });
 
     return response.status(204).json();

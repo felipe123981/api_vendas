@@ -1,5 +1,5 @@
-import CustomersRepository from '@modules/customers/typeorm/repositories/CustomersRepository';
-import { ProductsRepository } from '@modules/products/typeorm/repositories/ProductsRepository';
+import { CustomersRepository } from '@modules/customers/typeorm/repositories/CustomersRepository';
+import { ProductsRepository } from '@modules/products/typeorm/repositores/ProductsRepository';
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import Order from '../typeorm/entities/Order';
@@ -69,12 +69,12 @@ class CreateOrderService {
 
     const { order_products } = order;
 
-    const updatedProductQuantity = order_products.map(
-      product => ({
-        id: product.product_id,
-        quantity: existsProducts.filter(p => p.id === product.product_id)[0].quantity - product.quantity,
-      })
-    );
+    const updatedProductQuantity = order_products.map(product => ({
+      id: product.product_id,
+      quantity:
+        existsProducts.filter(p => p.id === product.product_id)[0].quantity -
+        product.quantity,
+    }));
 
     await productsRepository.save(updatedProductQuantity);
 

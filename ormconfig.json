@@ -3,7 +3,7 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "docker",
+  "password": "strawberrypie",
   "database": "apivendas",
   "entities": ["./src/modules/**/typeorm/entities/*.ts"],
   "migrations": [
